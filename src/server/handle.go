@@ -11,7 +11,6 @@ func (form *HttpInterceptor) Intercept(w http.ResponseWriter, r *http.Request) b
   return true
 }
 
-
 func register(h *elea.Handle) {
   h.Register("/path1", Path1)
   h.Register("/path2", Path2)
