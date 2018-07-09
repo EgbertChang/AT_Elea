@@ -20,6 +20,7 @@ func register(h *elea.Handle) {
 func Path1(w http.ResponseWriter, r *http.Request) {
   ua := r.Header.Get("user-agent")
   w.Write([]byte(ua))
+  
   // w.Write([]byte("Hello Path1"))
 }
 
