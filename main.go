@@ -4,7 +4,12 @@ import (
   "AT_Elea/util"
   "AT_Elea/elea"
   "AT_Elea/src/server"
+  "runtime"
 )
+
+func init() {
+  runtime.GOMAXPROCS(runtime.NumCPU())
+}
 
 func main() {
   ip := util.LocalIP()
