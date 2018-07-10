@@ -42,7 +42,7 @@ func (sr *Server) ListenAndServer() {
 	log.Fatalln(server.ListenAndServe())
 }
 
-// 调度器类用于处理所以http请求的顶层逻辑
+// 调度器类用于处理所有http请求的顶层逻辑
 type scheduler struct {
 	interceptor HttpInterceptor
 }
