@@ -14,7 +14,7 @@ func init() {
 }
 
 func main() {
-	httpService()
+	// httpService()
 	fileService()
 }
 
@@ -33,7 +33,7 @@ func httpService() {
 func fileService() {
 	ip := util.LocalIP()
 	Server := elea.Server{
-		Addr:        ip + ":8080",
+		Addr:        ip + ":8090",
 		Handle:      server.FileHandle(),
 		Interceptor: &server.FileInterceptor{},
 	}
