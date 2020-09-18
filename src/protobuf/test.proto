@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package example;
+
+enum PhoneType {
+    HOME = 0;
+    WORK = 1;
+}
+
+message Phone {
+    int32 id = 1;
+    string name = 2;
+    string model = 3;
+}
