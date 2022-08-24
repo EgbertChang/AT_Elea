@@ -6,49 +6,34 @@ import (
 	"time"
 )
 
-var mux *http.ServeMux
+type SchedulerCode int
 
-func init() {
-	// singleton pattern
-	mux = http.NewServeMux()
+type interceptorFunc func(http.ResponseWriter, *http.Request) SchedulerCode
+
+// 调度器类用于处理所有http请求的顶层逻辑
+type scheduler struct {
+	InterceptorFunc interceptorFunc
 }
 
-type HttpInterceptor interface {
-	Intercept(w http.ResponseWriter, r *http.Request) bool
-}
-
-type HandleSet interface {
-	GetHandle() map[string]http.HandlerFunc
+func (sc *scheduler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if sc.InterceptorFunc == nil || sc.InterceptorFunc(w, r) == 0 {
+		http.DefaultServeMux.ServeHTTP(w, r)
+	}
 }
 
 type Server struct {
-	Addr        string
-	Handle      HandleSet
-	Interceptor HttpInterceptor
+	Addr            string
+	InterceptorFunc interceptorFunc
 }
 
-func (sr *Server) ListenAndServer() {
-	for k, v := range sr.Handle.GetHandle() {
-		mux.HandleFunc(k, v)
-	}
+func (s *Server) ListenAndServe() {
 	server := http.Server{
-		Addr:           sr.Addr,
-		Handler:        &scheduler{sr.Interceptor},
+		Addr:           s.Addr,
+		Handler:        &scheduler{InterceptorFunc: s.InterceptorFunc},
 		ReadTimeout:    3 * time.Minute,
 		WriteTimeout:   3 * time.Minute,
 		MaxHeaderBytes: 1 << 20,
 	}
-	log.Println("Elea Server is listening on " + sr.Addr)
+	log.Println("Elea Server is listening on " + s.Addr)
 	log.Fatalln(server.ListenAndServe())
-}
-
-// 调度器类用于处理所有http请求的顶层逻辑
-type scheduler struct {
-	interceptor HttpInterceptor
-}
-
-func (form *scheduler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if form.interceptor.Intercept(w, r) {
-		mux.ServeHTTP(w, r)
-	}
 }

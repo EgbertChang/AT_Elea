@@ -2,45 +2,47 @@ package main
 
 import (
 	"AT_Elea/elea"
-	"AT_Elea/src/server"
 	"AT_Elea/util"
 	"log"
+	"net/http"
 	"runtime"
 )
 
 func init() {
-	log.Println("The elea is in service")
+	log.Println("🛰️The elea is in service")
 	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
 func main() {
-	// httpService()
+	apiService()
 	fileService()
+	startServer()
 }
 
-func httpsService() {}
-
-func httpService() {
-	ip := util.LocalIP()
-	Server := elea.Server{
-		Addr:        ip + ":8080",
-		Handle:      server.APIHandle(),
-		Interceptor: &server.APIInterceptor{},
-	}
-	Server.ListenAndServer()
+func apiService() {
+	http.HandleFunc("/path1", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello, I am elea"))
+	})
 }
 
 func fileService() {
-	ip := util.LocalIP()
-	Server := elea.Server{
-		Addr:        ip + ":8090",
-		Handle:      server.FileHandle(),
-		Interceptor: &server.FileInterceptor{},
-	}
-	Server.ListenAndServer()
+	elea.FileService()
 }
 
 func socketService() {
 	ip := util.LocalIP()
 	elea.Aleph(ip, "9090")
+}
+
+func interceptorFunc(w http.ResponseWriter, r *http.Request) elea.SchedulerCode {
+	return 0
+}
+
+func startServer() {
+	ip := util.LocalIP()
+	Server := elea.Server{
+		Addr:            ip + ":8080",
+		InterceptorFunc: interceptorFunc,
+	}
+	Server.ListenAndServe()
 }
