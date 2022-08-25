@@ -9,14 +9,14 @@ import (
 )
 
 func init() {
-	log.Println("🛰️The elea is in service")
+	log.Println("🛰️The name is Elea!")
 	runtime.GOMAXPROCS(runtime.NumCPU())
 }
 
 func main() {
-	apiService()
-	fileService()
-	startServer()
+	// apiService()
+	// fileService()
+	// startServer()
 }
 
 func apiService() {
@@ -31,17 +31,17 @@ func fileService() {
 
 func socketService() {
 	ip := util.LocalIP()
-	elea.Aleph(ip, "9090")
+	elea.Aleph(ip, "10001")
 }
 
 func interceptorFunc(w http.ResponseWriter, r *http.Request) elea.SchedulerCode {
-	return 0
+	return elea.Distribute
 }
 
 func startServer() {
 	ip := util.LocalIP()
 	Server := elea.Server{
-		Addr:            ip + ":8080",
+		Addr:            ip + ":10000",
 		InterceptorFunc: interceptorFunc,
 	}
 	Server.ListenAndServe()

@@ -8,6 +8,11 @@ import (
 
 type SchedulerCode int
 
+const (
+	Distribute SchedulerCode = iota
+	SessionExpiration
+)
+
 type interceptorFunc func(http.ResponseWriter, *http.Request) SchedulerCode
 
 // 调度器类用于处理所有http请求的顶层逻辑
@@ -16,7 +21,7 @@ type scheduler struct {
 }
 
 func (sc *scheduler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if sc.InterceptorFunc == nil || sc.InterceptorFunc(w, r) == 0 {
+	if sc.InterceptorFunc == nil || sc.InterceptorFunc(w, r) == Distribute {
 		http.DefaultServeMux.ServeHTTP(w, r)
 	}
 }
