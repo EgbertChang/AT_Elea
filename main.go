@@ -2,6 +2,7 @@ package main
 
 import (
 	"AT_Elea/elea"
+	"AT_Elea/src/web/auth"
 	"AT_Elea/util"
 	"log"
 	"net/http"
@@ -14,15 +15,12 @@ func init() {
 }
 
 func main() {
-	// apiService()
-	// fileService()
-	// startServer()
+	apiService()
+	startServer()
 }
 
 func apiService() {
-	http.HandleFunc("/path1", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Hello, I am elea"))
-	})
+	auth.Login()
 }
 
 func fileService() {
