@@ -13,7 +13,7 @@ type LogLevel uint16
 var DebugLogger *FileLogger
 var TraceLogger *FileLogger
 var InfoLogger *FileLogger
-var WarningLogger *FileLogger
+var WarnLogger *FileLogger
 var ErrorLogger *FileLogger
 var FatalLogger *FileLogger
 
@@ -30,7 +30,7 @@ func init() {
 	DebugLogger = NewFileLogger(DEBUG, folderPath, "debug.log", 100*1024*1024)
 	TraceLogger = NewFileLogger(TRACE, folderPath, "trace.log", 100*1024*1024)
 	InfoLogger = NewFileLogger(INFO, folderPath, "info.log", 100*1024*1024)
-	WarningLogger = NewFileLogger(WARNING, folderPath, "warning.log", 100*1024*1024)
+	WarnLogger = NewFileLogger(WARN, folderPath, "warn.log", 100*1024*1024)
 	ErrorLogger = NewFileLogger(ERROR, folderPath, "error.log", 100*1024*1024)
 	FatalLogger = NewFileLogger(FATAL, folderPath, "fatal.log", 100*1024*1024)
 }
@@ -38,10 +38,10 @@ func init() {
 // 日志级别
 const (
 	UNKNOWN LogLevel = iota
-	DEBUG
 	TRACE
+	DEBUG
 	INFO
-	WARNING
+	WARN
 	ERROR
 	FATAL
 )
@@ -55,8 +55,8 @@ func getLevelStr(level LogLevel) string {
 		return "TRACE"
 	case INFO:
 		return "INFO"
-	case WARNING:
-		return "WARNING"
+	case WARN:
+		return "WARN"
 	case ERROR:
 		return "ERROR"
 	case FATAL:
