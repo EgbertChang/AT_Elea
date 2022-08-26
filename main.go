@@ -33,6 +33,7 @@ func socketService() {
 }
 
 func interceptorFunc(w http.ResponseWriter, r *http.Request) elea.SchedulerCode {
+	elea.DebugLogger.Log(r.RequestURI)
 	return elea.Distribute
 }
 

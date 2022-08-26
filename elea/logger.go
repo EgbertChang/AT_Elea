@@ -10,8 +10,8 @@ import (
 
 type LogLevel uint16
 
-var DebugLogger *FileLogger
 var TraceLogger *FileLogger
+var DebugLogger *FileLogger
 var InfoLogger *FileLogger
 var WarnLogger *FileLogger
 var ErrorLogger *FileLogger
